@@ -12,7 +12,7 @@ public class Match {
     private int awayScore;
     private final Instant matchTime;
 
-    public Match(String awayTeam, String homeTeam) {
+    public Match(String homeTeam, String awayTeam) {
         this.matchId = UUID.randomUUID();
         this.awayTeam = awayTeam;
         this.homeTeam = homeTeam;
