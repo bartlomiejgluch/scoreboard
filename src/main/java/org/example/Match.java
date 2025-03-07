@@ -2,6 +2,7 @@ package org.example;
 
 import java.time.Instant;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 public class Match {
@@ -10,7 +11,7 @@ public class Match {
     private final String awayTeam;
     private int homeScore;
     private int awayScore;
-    private final Instant matchTime;
+    private Optional<Instant> startMatchTime;
 
     public Match(String homeTeam, String awayTeam) {
         this.matchId = UUID.randomUUID();
@@ -18,7 +19,7 @@ public class Match {
         this.homeTeam = homeTeam;
         this.homeScore = 0;
         this.awayScore = 0;
-        this.matchTime = Instant.now();
+        this.startMatchTime = Optional.empty();
     }
 
     public UUID getMatchId() {
@@ -41,9 +42,17 @@ public class Match {
         return awayScore;
     }
 
-    public Instant getMatchTime() {
-        return matchTime;
+    public Optional<Instant> getStartMatchTime() {
+        return startMatchTime;
     }
+
+    public void startMatch() {
+        if (startMatchTime.isPresent()) {
+            throw new IllegalStateException("Match has already started.");
+        }
+        this.startMatchTime = Optional.of(Instant.now());
+    }
+
 
     public void updateScore(int homeScore, int awayScore) {
         if (homeScore < 0 || awayScore < 0) {
@@ -70,7 +79,7 @@ public class Match {
                 ", awayTeam='" + awayTeam + '\'' +
                 ", homeScore=" + homeScore +
                 ", awayScore=" + awayScore +
-                ", matchTime=" + matchTime +
+                ", matchTime=" + startMatchTime +
                 '}';
     }
 
@@ -79,7 +88,9 @@ public class Match {
         if (o == null || getClass() != o.getClass()) return false;
 
         Match match = (Match) o;
-        return homeScore == match.homeScore && awayScore == match.awayScore && matchId.equals(match.matchId) && Objects.equals(homeTeam, match.homeTeam) && Objects.equals(awayTeam, match.awayTeam) && Objects.equals(matchTime, match.matchTime);
+        return homeScore == match.homeScore && awayScore == match.awayScore && matchId.equals(match.matchId)
+                && Objects.equals(homeTeam, match.homeTeam) && Objects.equals(awayTeam, match.awayTeam)
+                && Objects.equals(startMatchTime, match.startMatchTime);
     }
 
     @Override
@@ -89,7 +100,7 @@ public class Match {
         result = 31 * result + Objects.hashCode(awayTeam);
         result = 31 * result + homeScore;
         result = 31 * result + awayScore;
-        result = 31 * result + Objects.hashCode(matchTime);
+        result = 31 * result + Objects.hashCode(startMatchTime);
         return result;
     }
 }

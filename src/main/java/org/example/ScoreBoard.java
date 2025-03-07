@@ -1,5 +1,6 @@
 package org.example;
 
+import java.time.Instant;
 import java.util.*;
 
 public class ScoreBoard {
@@ -12,6 +13,8 @@ public class ScoreBoard {
         if (onGoingMatches.containsKey(id)) {
             throw new IllegalArgumentException("Match with this ID already exists: " + match.getMatchId());
         }
+
+        match.startMatch();
         onGoingMatches.put(id, match);
     }
 
@@ -32,7 +35,8 @@ public class ScoreBoard {
         return finishedMatches.stream()
                 .sorted(
                         Comparator.comparingInt(Match::getTotalScore).reversed()
-                                .thenComparing(Match::getMatchTime).reversed()
+                                .thenComparing(match -> match.getStartMatchTime().orElse(Instant.MIN),
+                                        Comparator.reverseOrder())
                 )
                 .toList();
     }
