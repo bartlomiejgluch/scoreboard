@@ -58,6 +58,10 @@ public class Match {
         return homeScore + awayScore;
     }
 
+    public String getMatchSummary() {
+        return homeTeam + " " + homeScore + " - " + awayTeam + " " + awayScore;
+    }
+
     @Override
     public String toString() {
         return "Match{" +
