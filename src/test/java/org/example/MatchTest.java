@@ -2,6 +2,8 @@ package org.example;
 
 import org.junit.jupiter.api.Test;
 
+import java.time.Instant;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -101,20 +103,4 @@ class MatchTest {
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("Match has already started.");
     }
-
-    @Test
-    void shouldThrowExceptionIfStartTimeTwice() throws InterruptedException {
-        // Given
-        Match match = new Match("Team A", "Team B");
-
-        // When
-        match.startMatch();
-        Thread.sleep(10);
-
-        // Then
-        assertThatThrownBy(match::startMatch)
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("Match has already started.");
-    }
-
 }
