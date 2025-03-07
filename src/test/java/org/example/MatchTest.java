@@ -2,8 +2,6 @@ package org.example;
 
 import org.junit.jupiter.api.Test;
 
-import java.time.Instant;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -105,13 +103,12 @@ class MatchTest {
     }
 
     @Test
-    void shouldNotSetStartTimeTwice() throws InterruptedException {
+    void shouldThrowExceptionIfStartTimeTwice() throws InterruptedException {
         // Given
         Match match = new Match("Team A", "Team B");
 
         // When
         match.startMatch();
-        Instant firstStartTime = match.getStartMatchTime().orElseThrow();
         Thread.sleep(10);
 
         // Then
